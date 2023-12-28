@@ -1,9 +1,9 @@
-import "./App.css";
-
 function App() {
   return (
     <>
-      <div>Home</div>
+      <div className=" flex justify-center align-middle bg-gray-400 text-center font-bold text-2xl">
+        Home
+      </div>
     </>
   );
 }
