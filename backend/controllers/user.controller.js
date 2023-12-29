@@ -176,6 +176,13 @@ const updateCurrentUser = asyncHandler(async (req, res) => {
   });
 });
 
+/******************************************************
+ * @DELETE_USER_BY_ID
+ * @REQUEST_TYPE DELETE
+ * @route http://localhost:8080/api/v1/users/:ID
+ * @description delete users
+ ******************************************************/
+
 const deleteUserById = asyncHandler(async (req, res) => {
   console.log(req.params.id);
   const user = await User.findById(req.params.id);
@@ -195,6 +202,13 @@ const deleteUserById = asyncHandler(async (req, res) => {
   }
 });
 
+/******************************************************
+ * @GET_USER_BY_ID
+ * @REQUEST_TYPE GET
+ * @route http://localhost:8080/api/v1/users/:id
+ * @description admin can get the user details by id
+ ******************************************************/
+
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select("-password");
 
@@ -213,4 +227,5 @@ export {
   getCurrentUserProfile,
   updateCurrentUser,
   deleteUserById,
+  getUserById,
 };

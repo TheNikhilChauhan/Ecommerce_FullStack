@@ -7,6 +7,7 @@ import {
   logoutUser,
   updateCurrentUser,
   deleteUserById,
+  getUserById,
 } from "../controllers/user.controller.js";
 import { isLoggedIn, authorizedRole } from "../middlewares/auth.middleware.js";
 
@@ -21,6 +22,9 @@ router
   .get(isLoggedIn, getCurrentUserProfile)
   .put(isLoggedIn, updateCurrentUser);
 
-router.route("/:id").delete(isLoggedIn, authorizedRole, deleteUserById);
+router
+  .route("/:id")
+  .delete(isLoggedIn, authorizedRole, deleteUserById)
+  .get(isLoggedIn, authorizedRole, getUserById);
 
 export default router;

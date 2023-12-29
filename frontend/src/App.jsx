@@ -1,9 +1,16 @@
+import { Outlet } from "react-router-dom";
+import Navigation from "./pages/Auth/Navigation";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   return (
     <>
-      <div className=" flex justify-center align-middle bg-gray-400 text-center font-bold text-2xl">
-        Home
-      </div>
+      <ToastContainer />
+      <Navigation />
+      <main>
+        <Outlet />
+      </main>
     </>
   );
 }
