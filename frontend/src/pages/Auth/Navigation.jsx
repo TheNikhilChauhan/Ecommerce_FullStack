@@ -9,8 +9,12 @@ import {
 import { FaHeart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navigation.css";
+import { useLogoutMutation } from "../../redux/api/userSlice.js";
+import { logout } from "../../redux/features/auth/authSlice.js";
+import { useSelector, useDispatch } from "react-redux";
 
 const Navigation = () => {
+  const { userInfo } = useSelector((state) => state.auth);
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
 
@@ -21,6 +25,22 @@ const Navigation = () => {
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [logoutApiCall] = useLogoutMutation();
+
+  const logoutHandler = async () => {
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div
       style={{ zIndex: 9999 }}
@@ -58,6 +78,24 @@ const Navigation = () => {
           <FaHeart className="mr-2 mt-[3rem]" size={26} />
           <span className=" hidden  nav-item-name mt-[3rem] ">Favorite</span>
         </Link>
+      </div>
+
+      <div className="relative">
+        <button
+          onClick={toggleDropdown}
+          className="flex items-center text-gray-800 focus:outline-none"
+        >
+          {userInfo ? (
+            (console.log(userInfo),
+            (
+              <span className="text-white text-2xl">
+                {userInfo.userExists.name}
+              </span>
+            ))
+          ) : (
+            <></>
+          )}
+        </button>
       </div>
 
       <ul>
