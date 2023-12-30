@@ -16,7 +16,7 @@ const router = express.Router();
 router.route("/allUsers").get(isLoggedIn, authorizedRole, getAllUsers);
 router.route("/signup").post(createUser);
 router.post("/login", loginUser);
-router.get("/logout", logoutUser);
+router.post("/logout", logoutUser);
 router
   .route("/profile")
   .get(isLoggedIn, getCurrentUserProfile)

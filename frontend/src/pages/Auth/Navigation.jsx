@@ -9,9 +9,9 @@ import {
 import { FaHeart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navigation.css";
+import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../../redux/api/userSlice.js";
 import { logout } from "../../redux/features/auth/authSlice.js";
-import { useSelector, useDispatch } from "react-redux";
 
 const Navigation = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -20,10 +20,6 @@ const Navigation = () => {
 
   const toggleDropdown = () => {
     setDropDownOpen(!dropDownOpen);
-  };
-
-  const toggleSidebar = () => {
-    setShowSidebar(!showSidebar);
   };
 
   const dispatch = useDispatch();
@@ -95,29 +91,95 @@ const Navigation = () => {
           ) : (
             <></>
           )}
+          {userInfo && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`h-4 w-4 ml-1 ${
+                dropDownOpen ? "transform rotate-180" : ""
+              }`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="white"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d={dropDownOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
+              />
+            </svg>
+          )}
         </button>
       </div>
 
-      <ul>
-        <li>
-          <Link
-            to="/login"
-            className="flex items-center transition-transform transform hover: translate-x-2"
-          >
-            <AiOutlineLogin className="mr-2 mt-[3rem]" size={26} />
-            <span className=" hidden  nav-item-name mt-[3rem] ">Login</span>
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/register"
-            className="flex items-center transition-transform transform hover: translate-x-2"
-          >
-            <AiOutlineUserAdd className="mr-2 mt-[3rem]" size={26} />
-            <span className=" hidden  nav-item-name mt-[3rem] ">Register</span>
-          </Link>
-        </li>
-      </ul>
+      {dropDownOpen && userInfo && (
+        <ul>
+          {userInfo.userExists.role === "ADMIN" && (
+            <>
+              <li>
+                <Link to="/admin/dashboard">Dashboard</Link>
+              </li>
+              <li>
+                <Link to="/admin/productlist">Products</Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/admin/categorylist"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  Category
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/admin/orderlist"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  Orders
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/admin/userlist"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  Users
+                </Link>
+              </li>
+            </>
+          )}
+
+          <li>Profile</li>
+          <li>
+            <button onClick={logoutHandler}>Logout</button>
+          </li>
+        </ul>
+      )}
+      {!userInfo && (
+        <ul>
+          <li>
+            <Link
+              to="/login"
+              className="flex items-center transition-transform transform hover: translate-x-2"
+            >
+              <AiOutlineLogin className="mr-2 mt-[3rem]" size={26} />
+              <span className=" hidden  nav-item-name mt-[3rem] ">Login</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/register"
+              className="flex items-center transition-transform transform hover: translate-x-2"
+            >
+              <AiOutlineUserAdd className="mr-2 mt-[3rem]" size={26} />
+              <span className=" hidden  nav-item-name mt-[3rem] ">
+                Register
+              </span>
+            </Link>
+          </li>
+        </ul>
+      )}
     </div>
   );
 };
