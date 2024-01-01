@@ -82,8 +82,7 @@ const Navigation = () => {
           className="flex items-center text-gray-800 focus:outline-none"
         >
           {userInfo ? (
-            (console.log(userInfo),
-            (<span className="text-white text-2xl">{userInfo.user.name}</span>))
+            <span className="text-white text-2xl">{userInfo.user.name}</span>
           ) : (
             <></>
           )}
@@ -110,7 +109,7 @@ const Navigation = () => {
 
       {dropDownOpen && userInfo && (
         <ul>
-          {userInfo.user.role === "ADMIN" && (
+          {userInfo.role === "ADMIN" && (
             <>
               <li>
                 <Link to="/admin/dashboard">Dashboard</Link>
@@ -146,9 +145,18 @@ const Navigation = () => {
             </>
           )}
 
-          <li>Profile</li>
           <li>
-            <button onClick={logoutHandler}>Logout</button>
+            <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100">
+              Profile
+            </Link>
+          </li>
+          <li>
+            <button
+              onClick={logoutHandler}
+              className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+            >
+              Logout
+            </button>
           </li>
         </ul>
       )}
