@@ -47,9 +47,9 @@ const Register = () => {
   };
 
   return (
-    <section className="pl-[10rem] flex flex-wrap">
+    <section className="pl-[20rem] pt-12 flex flex-wrap">
       <div className="mr-[4rem] mt-[5rem]">
-        <h1 className="text-2xl font-semibold mb-4">Register</h1>
+        <h1 className="text-2xl font-semibold mb-4 text-white">Register</h1>
 
         <form onSubmit={submitHandler} className="container w-[40rem]">
           <div className="my-[2rem]">
@@ -117,12 +117,18 @@ const Register = () => {
             />
           </div>
 
-          <button>{isLoading ? "Registering..." : "Register"}</button>
+          <button
+            className="bg-pink-500 text-white px-4 py-2 rounded cursor-pointer my-[1rem]"
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? "Registering..." : "Register"}
+          </button>
           {isLoading && Loader}
         </form>
 
         <div className="mt-4">
-          <p>
+          <p className=" text-white">
             Already have an account?{" "}
             <Link
               to={redirect ? `/login?redirect=${redirect}` : "/login"}

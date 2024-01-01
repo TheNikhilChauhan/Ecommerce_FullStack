@@ -83,11 +83,7 @@ const Navigation = () => {
         >
           {userInfo ? (
             (console.log(userInfo),
-            (
-              <span className="text-white text-2xl">
-                {userInfo.userExists.name}
-              </span>
-            ))
+            (<span className="text-white text-2xl">{userInfo.user.name}</span>))
           ) : (
             <></>
           )}
@@ -114,7 +110,7 @@ const Navigation = () => {
 
       {dropDownOpen && userInfo && (
         <ul>
-          {userInfo.userExists.role === "ADMIN" && (
+          {userInfo.user.role === "ADMIN" && (
             <>
               <li>
                 <Link to="/admin/dashboard">Dashboard</Link>

@@ -30,23 +30,23 @@ const createUser = asyncHandler(async (req, res, next) => {
   }
 
   //create new user
-  const newUser = new User({
+  const user = new User({
     name,
     email,
     password,
   });
 
   try {
-    await newUser.save();
+    await user.save();
 
-    const token = await newUser.getJwtToken();
-    newUser.password = undefined;
+    const token = await user.getJwtToken();
+    user.password = undefined;
     res.cookie("token", token, cookieOptions);
 
     res.status(201).json({
       success: true,
       message: "User registered successfully.",
-      newUser,
+      user,
     });
   } catch (error) {
     res.status(400);
@@ -69,20 +69,20 @@ const loginUser = asyncHandler(async (req, res, next) => {
     throw new ErrorHandler("All fields are required.", 400);
   }
 
-  const userExists = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email }).select("+password");
 
-  if (!userExists || !userExists.comparePassword(password)) {
+  if (!user || !user.comparePassword(password)) {
     throw new ErrorHandler("Email or password does not match.", 400);
   }
 
-  if (userExists.comparePassword) {
-    const token = userExists.getJwtToken();
-    userExists.password = undefined;
+  if (user.comparePassword) {
+    const token = user.getJwtToken();
+    user.password = undefined;
     res.cookie("token", token, cookieOptions);
     return res.status(200).json({
       success: true,
       message: "User logged in successfully.",
-      userExists,
+      user,
     });
   }
   throw new ErrorHandler("Invalid credentials", 400);
