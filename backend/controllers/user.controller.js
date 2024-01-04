@@ -154,7 +154,7 @@ const getCurrentUserProfile = asyncHandler(async (req, res) => {
  ******************************************************/
 
 const updateCurrentUser = asyncHandler(async (req, res) => {
-  const { name } = req.body;
+  const { name, email } = req.body;
   const id = req.user._id;
 
   const user = await User.findById(id);
@@ -164,8 +164,9 @@ const updateCurrentUser = asyncHandler(async (req, res) => {
   }
 
   //update
-  if (name) {
+  if (user) {
     user.name = name;
+    user.email = email;
   }
 
   await user.save();
@@ -173,6 +174,7 @@ const updateCurrentUser = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Profile updated successfully",
+    user,
   });
 });
 
@@ -219,6 +221,28 @@ const getUserById = asyncHandler(async (req, res) => {
     throw new ErrorHandler("User not found");
   }
 });
+
+const updateUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.role = req.body.role || user.role;
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      role: updatedUser.role,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
 export {
   createUser,
   loginUser,
@@ -228,4 +252,5 @@ export {
   updateCurrentUser,
   deleteUserById,
   getUserById,
+  updateUserById,
 };

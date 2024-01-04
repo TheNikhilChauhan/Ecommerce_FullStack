@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import {
   AiOutlineHome,
@@ -109,7 +110,7 @@ const Navigation = () => {
 
       {dropDownOpen && userInfo && (
         <ul>
-          {userInfo.role === "ADMIN" && (
+          {userInfo.user.role === "ADMIN" && (
             <>
               <li>
                 <Link to="/admin/dashboard">Dashboard</Link>
