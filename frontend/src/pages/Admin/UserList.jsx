@@ -22,9 +22,42 @@ const UserList = () => {
     refetch();
   }, [refetch]);
 
+  const deleteHandler = async (id) => {
+    if (window.confirm("Are you sure?")) {
+      try {
+        await deleteUser(id);
+        refetch();
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
+  };
+
+  const updateHandler = async (id) => {
+    try {
+      await updateUser({
+        userId: id,
+        name: editableName,
+        email: editableEmail,
+      });
+      setEditableUserId(null);
+      refetch();
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  };
+
+  const toggleEdit = (id, name, email) => {
+    setEditableUserId(id);
+    setEditableName(name);
+    setEditableEmail(email);
+  };
+
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-semibold mb-4">Users</h1>
+      <h1 className="text-2xl font-semibold text-white text-center mt-4 mb-12">
+        Users List
+      </h1>
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -32,12 +65,9 @@ const UserList = () => {
           {error?.data?.message || error.error}
         </Message>
       ) : (
-        <div className="flex flex-col md:flex-row">
-          {
-            {
-              /* Admin Menu */
-            }
-          }
+        <div className="flex flex-col md:flex-row text-white">
+          {/* Admin Menu */}
+
           <table className="w-full md:w-4/5 mx-auto">
             <thead>
               <tr>
@@ -62,14 +92,21 @@ const UserList = () => {
                           className="w-full p-2 border rounded-lg"
                         />
 
-                        <button className="ml-2 bg-blue-500 text-white py-2 px-4 rounded-lg">
+                        <button
+                          onClick={() => updateHandler(user._id)}
+                          className="ml-2 bg-blue-500 text-white py-2 px-4 rounded-lg"
+                        >
                           <FaCheck />
                         </button>
                       </div>
                     ) : (
                       <div>
                         {user.name}{" "}
-                        <button>
+                        <button
+                          onClick={() =>
+                            toggleEdit(user._id, user.name, user.email)
+                          }
+                        >
                           <FaEdit className="ml-[1rem]" />
                         </button>
                       </div>
@@ -84,16 +121,21 @@ const UserList = () => {
                           onChange={(e) => setEditableEmail(e.target.value)}
                           className="w-full p-2 border rounded-lg"
                         />
-                        <button className="ml-2 bg-blue-500 text-white py-2 px-4 rounded-lg">
+                        <button
+                          className="ml-2 bg-blue-500 text-white py-2 px-4 rounded-lg"
+                          onClick={() => updateHandler(user._id)}
+                        >
                           <FaCheck />
                         </button>
                       </div>
                     ) : (
-                      <div>
-                        <a href={`mailto:${(user._id, user.name, user.email)}`}>
-                          {user.email}
-                        </a>{" "}
-                        <button>
+                      <div className="flex items-center">
+                        <a href={`mailto:${user.email}`}>{user.email}</a>{" "}
+                        <button
+                          onClick={() =>
+                            toggleEdit(user._id, user.name, user.email)
+                          }
+                        >
                           <FaEdit className="ml-[1rem]" />
                         </button>
                       </div>
@@ -109,7 +151,10 @@ const UserList = () => {
                   <td className="px-4 py-2">
                     {user.role === "USER" && (
                       <div className="flex">
-                        <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        <button
+                          className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                          onClick={() => deleteHandler(user._id)}
+                        >
                           <FaTrash />
                         </button>
                       </div>

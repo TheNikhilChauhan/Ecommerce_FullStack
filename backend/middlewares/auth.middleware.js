@@ -22,15 +22,10 @@ export const isLoggedIn = asyncHandler(async (req, res, next) => {
 });
 
 //admin authorizedRole
-export const authorizedRole =
-  (...role) =>
-  async (req, res, next) => {
-    const currentUserRole = req.user.role;
-    if (!role.includes(currentUserRole)) {
-      throw new ErrorHandler(
-        "You do not have permission to access this route",
-        403
-      );
-    }
+export const authorizedRole = (req, res, next) => {
+  if (req.user && req.user.role === "ADMIN") {
     next();
-  };
+  } else {
+    res.status(401).send("Not authorized as an admin.");
+  }
+};
