@@ -7,6 +7,7 @@ import {
 } from "../../redux/api/categorySlice";
 import { toast } from "react-toastify";
 import CategoryForm from "../../components/CategoryForm";
+import Modal from "../../components/Modal";
 
 const CategoryList = () => {
   const { data: categories } = useFetchCategoryQuery();
@@ -51,8 +52,8 @@ const CategoryList = () => {
     try {
       const result = await updateCategory({
         categoryId: selectCategory._id,
-        updateCategory: {
-          name: updateCategory,
+        updatedCategory: {
+          name: updateName,
         },
       }).unwrap();
 
@@ -106,7 +107,7 @@ const CategoryList = () => {
                 onClick={() => {
                   {
                     setModalVisible(true);
-                    setSelectedCategory(category);
+                    setSelectCategory(category);
                     setUpdateName(category.name);
                   }
                 }}
@@ -116,6 +117,16 @@ const CategoryList = () => {
             </div>
           ))}
         </div>
+
+        <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
+          <CategoryForm
+            value={updateName}
+            setValue={(value) => setUpdateName(value)}
+            handleSubmit={handleUpdateCategory}
+            buttonText="Update"
+            handleDelete={handleDeleteCategory}
+          />
+        </Modal>
       </div>
     </div>
   );
