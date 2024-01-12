@@ -119,4 +119,121 @@ const fetchProducts = asyncHandler(async (req, res) => {
     throw new ErrorHandler(error.message, 500);
   }
 });
-export { addProduct, updateProduct, removeProduct, fetchProducts };
+
+/* fetch products by id */
+const fetchProductById = asyncHandler(async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (product) {
+      return res.json(product);
+    } else {
+      throw new ErrorHandler("Product not found", 404);
+    }
+  } catch (error) {
+    throw new ErrorHandler(error.message, 404);
+  }
+});
+
+/* fetch All products */
+const fetchAllProducts = asyncHandler(async (req, res) => {
+  try {
+    const product = await Product.find({})
+      .populate("category")
+      .limit(12)
+      .sort({ createdAt: -1 });
+
+    res.json(product);
+  } catch (error) {
+    throw new ErrorHandler({ error: "Server Error" }, 404);
+  }
+});
+
+/* adding review of product */
+const addProductReview = asyncHandler(async (req, res) => {
+  try {
+    const { rating, comment } = req.body;
+    const product = await Product.findById(req.params.id);
+
+    if (product) {
+      const alreadyReviewed = product.reviews.find(
+        (review) => review.user.toString() === req.user._id.toString()
+      );
+
+      if (alreadyReviewed) {
+        throw new ErrorHandler("Product already reviewed.", 400);
+      }
+
+      const review = {
+        name: req.user.name,
+        rating: Number(rating),
+        comment,
+        user: req.user._id,
+      };
+
+      product.reviews.push(review);
+      console.log(req.user);
+      console.log(product.reviews);
+      console.log(product.reviews.map((review) => review.user));
+
+      product.numReviews = product.reviews.length;
+
+      product.rating =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+        product.reviews.length;
+
+      await product.save();
+      res.status(201).json({ message: "Review added" });
+    } else {
+      throw new ErrorHandler("Product not found", 404);
+    }
+  } catch (error) {
+    throw new ErrorHandler(error.message, 400);
+  }
+});
+
+const fetchTopProducts = asyncHandler(async (req, res) => {
+  try {
+    const product = await Product.find({}).sort({ rating: -1 }).limit(4);
+    res.json(product);
+  } catch (error) {
+    throw new ErrorHandler(error.message, 400);
+  }
+});
+
+const fetchNewProducts = asyncHandler(async (req, res) => {
+  try {
+    const product = await Product.find().sort({ _id: -1 }).limit(5);
+    res.json(product);
+  } catch (error) {
+    throw new ErrorHandler(error.message, 400);
+  }
+});
+
+/* Filter products */
+const filterProducts = asyncHandler(async (req, res) => {
+  try {
+    const { checked, radio } = req.body;
+
+    let args = {};
+    if (checked.length > 0) args.category = checked;
+    if (radio.length) args.price = { $gte: radio[0], $lte: radio[1] };
+
+    const products = await Product.find(args);
+    res.json(products);
+  } catch (error) {
+    throw new ErrorHandler(error.message, 400);
+  }
+});
+
+export {
+  addProduct,
+  updateProduct,
+  removeProduct,
+  fetchProducts,
+  fetchProductById,
+  fetchAllProducts,
+  addProductReview,
+  fetchTopProducts,
+  fetchNewProducts,
+  filterProducts,
+};
