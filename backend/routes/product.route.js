@@ -23,7 +23,9 @@ router
   .post(isLoggedIn, authorizedRole, formidable(), addProduct)
   .get(fetchProducts);
 
-router.route("/:id/reviews").post(isLoggedIn, authorizedRole, addProductReview);
+router
+  .route("/:id/reviews")
+  .post(isLoggedIn, authorizedRole, checkId, addProductReview);
 router.route("/allproducts").get(fetchAllProducts);
 router.get("/top", fetchTopProducts);
 router.get("/new", fetchNewProducts);
