@@ -13,9 +13,11 @@ import {
   fetchProductById,
   fetchProducts,
   fetchTopProducts,
+  filterProducts,
   removeProduct,
   updateProduct,
 } from "../controllers/product.controller.js";
+import { productSlice } from "../../frontend/src/redux/api/productSlice.js";
 
 /* product: fetch, add */
 router
@@ -37,4 +39,6 @@ router
   .put(isLoggedIn, authorizedRole, formidable(), updateProduct)
   .delete(isLoggedIn, authorizedRole, removeProduct);
 
+/*  Filtered productSlice */
+router.route("/filtered-products").post(filterProducts);
 export default router;

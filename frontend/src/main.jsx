@@ -16,18 +16,23 @@ import Register from "./pages/Auth/Register.jsx";
 import Profile from "./pages/User/Profile.jsx";
 import UserList from "./pages/Admin/UserList.jsx";
 import CategoryList from "./pages/Admin/CategoryList.jsx";
+import ProductList from "./pages/Admin/ProductList.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      {/* User routes */}
       <Route path="" element={<PrivateRoutes />}>
         <Route path="/profile" element={<Profile />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+
+      {/* Admin routes */}
       <Route path="/admin" element={<AdminRoutes />}>
         <Route path="/admin/userlist" element={<UserList />} />
         <Route path="/admin/categorylist" element={<CategoryList />} />
+        <Route path="/admin/productlist" element={<ProductList />} />
       </Route>
     </Route>
   )
