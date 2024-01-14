@@ -10,8 +10,8 @@ const storage = multer.diskStorage({
   },
 
   filename: (req, file, cb) => {
-    const extName = path.extname(file.originalname);
-    cb(null, `${file.fieldname}-${Date.now()}${extName}`);
+    const extname = path.extname(file.originalname);
+    cb(null, `${file.fieldname}-${Date.now()}${extname}`);
   },
 });
 
@@ -39,7 +39,7 @@ router.post("/", (req, res) => {
     } else if (req.file) {
       res.status(200).send({
         message: "Image uploaded successfully",
-        image: `${req.file.path}`,
+        image: `/${req.file.path}`,
       });
     } else {
       res.status(400).send({ message: "No image file provided" });

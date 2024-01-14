@@ -17,7 +17,6 @@ import {
   removeProduct,
   updateProduct,
 } from "../controllers/product.controller.js";
-import { productSlice } from "../../frontend/src/redux/api/productSlice.js";
 
 /* product: fetch, add */
 router

@@ -12,10 +12,10 @@ const ProductList = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [quantity, setQunatity] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
   const [brand, setBrand] = useState("");
-  const [stock, setStock] = useState("");
+  const [stock, setStock] = useState(0);
   const [imageUrl, setImageUrl] = useState(null);
 
   const navigate = useNavigate();
@@ -23,20 +23,6 @@ const ProductList = () => {
   const [uploadProductImage] = useUploadProductImageMutation();
   const { data: categories } = useFetchCategoryQuery();
   const [createProduct] = useCreateProductMutation();
-
-  const uploadFileHandler = async (e) => {
-    const formData = new FormData();
-    formData.append("image", e.target.files[0]);
-
-    try {
-      const res = await uploadProductImage(formData).unwrap();
-      toast.success(res.message);
-      setImage(res.image);
-      setImageUrl(res.image);
-    } catch (error) {
-      toast.error(error?.data?.message || error.error);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,6 +48,20 @@ const ProductList = () => {
       }
     } catch (error) {
       toast.error("Product create failed. Try Again.");
+    }
+  };
+
+  const uploadFileHandler = async (e) => {
+    const formData = new FormData();
+    formData.append("image", e.target.files[0]);
+
+    try {
+      const res = await uploadProductImage(formData).unwrap();
+      toast.success(res.message);
+      setImage(res.image);
+      setImageUrl(res.image);
+    } catch (error) {
+      toast.error(error?.data?.message || error.error);
     }
   };
 
@@ -91,8 +91,8 @@ const ProductList = () => {
                 type="file"
                 name="image"
                 accept="image/*"
-                className={!image ? "hidden" : "text-white"}
                 onChange={uploadFileHandler}
+                className={!image ? "hidden" : "text-white"}
               />
             </label>
           </div>
@@ -136,7 +136,7 @@ const ProductList = () => {
                   type="number"
                   className="p-4 mb-3 w-[30rem] border bg-[#101011] rounded-lg text-white"
                   value={quantity}
-                  onChange={(e) => setQunatity(e.target.value)}
+                  onChange={(e) => setQuantity(e.target.value)}
                 />
               </div>
             </div>
@@ -182,7 +182,7 @@ const ProductList = () => {
 
             <button
               className="py-4 px-10 mt-5 rounded-lg text-lg font-bold bg-pink-600"
-              onSubmit={handleSubmit}
+              onClick={handleSubmit}
             >
               Submit
             </button>
