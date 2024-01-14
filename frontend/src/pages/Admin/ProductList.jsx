@@ -5,6 +5,7 @@ import {
   useCreateProductMutation,
 } from "../../redux/api/productSlice";
 import { useFetchCategoryQuery } from "../../redux/api/categorySlice";
+import { toast } from "react-toastify";
 
 const ProductList = () => {
   const [image, setImage] = useState("");
@@ -23,11 +24,54 @@ const ProductList = () => {
   const { data: categories } = useFetchCategoryQuery();
   const [createProduct] = useCreateProductMutation();
 
+  const uploadFileHandler = async (e) => {
+    const formData = new FormData();
+    formData.append("image", e.target.files[0]);
+
+    try {
+      const res = await uploadProductImage(formData).unwrap();
+      toast.success(res.message);
+      setImage(res.image);
+      setImageUrl(res.image);
+    } catch (error) {
+      toast.error(error?.data?.message || error.error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const productData = new FormData();
+      productData.append("name", name);
+      productData.append("description", description);
+      productData.append("price", price);
+      productData.append("quantity", quantity);
+      productData.append("brand", brand);
+      productData.append("category", category);
+      productData.append("countInStock", stock);
+      productData.append("image", image);
+
+      const { data } = await createProduct(productData);
+
+      if (data.error) {
+        toast.error("Product create failed. Try Again.");
+      } else {
+        toast.success(`${data.name} is created`);
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Product create failed. Try Again.");
+    }
+  };
+
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0]">
       <div className="flex flex-col md:flex-row">
         <div className="md:w-3/4 p-3 text-white">
-          <div className="h-12 text-white">Create Product</div>
+          <div className="h-16 text-white text-3xl font-semibold text-center">
+            Create Product
+          </div>
 
           {imageUrl && (
             <div className="text-center">
@@ -48,6 +92,7 @@ const ProductList = () => {
                 name="image"
                 accept="image/*"
                 className={!image ? "hidden" : "text-white"}
+                onChange={uploadFileHandler}
               />
             </label>
           </div>
@@ -135,7 +180,10 @@ const ProductList = () => {
               </div>
             </div>
 
-            <button className="py-4 px-10 mt-5 rounded-lg text-lg font-bold bg-pink-600">
+            <button
+              className="py-4 px-10 mt-5 rounded-lg text-lg font-bold bg-pink-600"
+              onSubmit={handleSubmit}
+            >
               Submit
             </button>
           </div>
