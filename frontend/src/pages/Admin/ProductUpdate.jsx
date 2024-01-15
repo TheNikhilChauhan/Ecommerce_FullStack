@@ -14,8 +14,6 @@ const ProductUpdate = () => {
   const params = useParams();
   const { data: productData } = useGetProductByIdQuery(params._id);
 
-  console.log(productData);
-
   const [image, setImage] = useState(productData?.image || "");
   const [name, setName] = useState(productData?.name || "");
   const [description, setDescription] = useState(
@@ -54,11 +52,12 @@ const ProductUpdate = () => {
     formData.append("image", e.target.files[0]);
 
     try {
-      const res = uploadProductImage(formData).unwrap();
+      const res = await uploadProductImage(formData).unwrap();
       toast.success("Item added successfully.", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 2000,
       });
+      console.log(res);
       setImage(res.image);
     } catch (error) {
       toast.error("Failed to add image");

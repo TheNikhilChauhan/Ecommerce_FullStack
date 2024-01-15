@@ -18,7 +18,7 @@ const AdminMenu = () => {
         onClick={toggleMenu}
       >
         {isMenuOpen ? (
-          <FaTimes />
+          <FaTimes color="white" />
         ) : (
           <>
             <div className="w-6 h-0.5 bg-gray-200 my-1"></div>
