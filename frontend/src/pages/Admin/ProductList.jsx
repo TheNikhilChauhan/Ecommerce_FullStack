@@ -6,6 +6,7 @@ import {
 } from "../../redux/api/productSlice";
 import { useFetchCategoryQuery } from "../../redux/api/categorySlice";
 import { toast } from "react-toastify";
+import AdminMenu from "./AdminMenu";
 
 const ProductList = () => {
   const [image, setImage] = useState("");
@@ -68,6 +69,7 @@ const ProductList = () => {
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0]">
       <div className="flex flex-col md:flex-row">
+        <AdminMenu />
         <div className="md:w-3/4 p-3 text-white">
           <div className="h-16 text-white text-3xl font-semibold text-center">
             Create Product
