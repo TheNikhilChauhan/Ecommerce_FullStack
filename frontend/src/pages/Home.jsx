@@ -4,10 +4,11 @@ import Message from "../components/Message";
 import { useGetProductsQuery } from "../redux/api/productSlice";
 import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
+import Product from "./Products/Product";
 
 const Home = () => {
   const { keyword } = useParams();
-  const { data, isLoading, isError } = useGetProductsQuery();
+  const { data, isLoading, isError } = useGetProductsQuery({ keyword });
   return (
     <>
       {!keyword ? <Header /> : null}
@@ -20,7 +21,7 @@ const Home = () => {
       ) : (
         <>
           <div className="flex justify-between items-center">
-            <h1 className="ml-[20rem] mt-[10rem] text-[3rem]">
+            <h1 className="ml-[20rem] mt-[10rem] text-[3rem] text-white">
               Special Products
             </h1>
 
@@ -32,15 +33,15 @@ const Home = () => {
             </Link>
           </div>
 
-          {/* <div>
-                <div>
-                    {data.products.map((product) => (
-                        <div>
-                            
-                        </div>
-                    ))}
+          <div>
+            <div className="flex justify-center flex-wrap mt-[2rem]">
+              {data.products.map((product) => (
+                <div key={product._id}>
+                  <Product product={product} />
                 </div>
-            </div> */}
+              ))}
+            </div>
+          </div>
         </>
       )}
     </>
