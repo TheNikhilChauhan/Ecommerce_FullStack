@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import HeartIcon from "./HeartIcon";
 // import HeartIcon from "./HeartIcon";
 
 const SmallProduct = ({ product }) => {
@@ -10,7 +11,7 @@ const SmallProduct = ({ product }) => {
           alt={product.name}
           className="h-auto rounded"
         />
-        {/* <HeartIcon product={product} /> */}
+        <HeartIcon product={product} />
       </div>
 
       <div className="p-4 text-white">
