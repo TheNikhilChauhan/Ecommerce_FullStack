@@ -54,6 +54,10 @@ const ProductTabs = ({
           Related Products
         </div>
       </section>
+
+      {/* second section: details of the active tab */}
+
+      <section></section>
     </div>
   );
 };

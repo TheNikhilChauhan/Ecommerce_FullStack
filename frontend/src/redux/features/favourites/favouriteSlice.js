@@ -6,7 +6,7 @@ const favouriteSlice = createSlice({
   reducers: {
     addToFavourites: (state, action) => {
       //check if the product is already in favourites
-      if (!state.some((product) => product._id !== action.payload._id)) {
+      if (!state.some((product) => product._id === action.payload._id)) {
         state.push(action.payload);
       }
     },
