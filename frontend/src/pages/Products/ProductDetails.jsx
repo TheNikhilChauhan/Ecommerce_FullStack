@@ -18,6 +18,8 @@ import {
   FaStore,
 } from "react-icons/fa";
 import moment from "moment";
+import ProductTabs from "./ProductTabs";
+import Ratings from "./Ratings";
 
 const ProductDetails = () => {
   const { id: productId } = useParams();
@@ -127,10 +129,52 @@ const ProductDetails = () => {
                 </div>
               </div>
 
-              <div>{/* Ratings */}</div>
-              <div>{/* Add to cart */}</div>
+              <div className="flex justify-between flex-wrap">
+                {/* Ratings */}
+                <Ratings
+                  value={product.rating}
+                  text={`${product.numReviews} reviews`}
+                />
+
+                {product.countInStock > 0 && (
+                  <div>
+                    <select
+                      value={quantity}
+                      onChange={(e) => setQuantity(e.target.value)}
+                      className="p-2 w-[6rem] rounded-lg text-white bg-slate-900"
+                    >
+                      {[...Array(product.countInStock).keys()].map((x) => (
+                        <option key={x + 1} value={x + 1}>
+                          {x + 1}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </div>
+              <div className="btn-container">
+                {/* Add to cart */}
+                <button
+                  disabled={product.countInStock === 0}
+                  className="bg-pink-600 text-white py-2 px-4 rounded-lg mt-4 md:mt-0"
+                >
+                  Add To Cart
+                </button>
+              </div>
             </div>
-            <div>{/* Product tabs */}</div>
+            <div className="mt-[5rem] container flex flex-wrap items-start justify-between ml-[10rem] ">
+              {/* Product tabs */}
+              <ProductTabs
+                loadingProductReview={loadingProductReview}
+                userInfo={userInfo}
+                submitHandler={submitHandler}
+                rating={rating}
+                setRating={setRating}
+                comment={comment}
+                setComment={setComment}
+                product={product}
+              />
+            </div>
           </div>
         </>
       )}
