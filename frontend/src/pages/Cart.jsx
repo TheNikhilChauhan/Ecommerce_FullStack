@@ -24,14 +24,14 @@ const Cart = () => {
 
   return (
     <>
-      <div className="container flex justify-around items-start flex-wrap mx-auto mt-8 text-white">
+      <div className="container flex justify-around items-start flex-wrap mx-auto  text-white">
         {cartItems.length === 0 ? (
-          <div>
+          <div className="mt-8">
             Your cart is empty <Link to="/shop">Go To Shop</Link>
           </div>
         ) : (
           <>
-            <div className="flex flex-col w-[80%]">
+            <div className="flex flex-col w-[80%] mt-8">
               <h1 className="text-2xl font-semibold mb-4">Shopping Cart</h1>
 
               {cartItems.map((item) => (
@@ -91,7 +91,7 @@ const Cart = () => {
                   </h2>
 
                   <div className="text-2xl font-bold">
-                    {" "}
+                    &#8377;{" "}
                     {cartItems
                       .reduce(
                         (acc, item) => acc + item.price * item.quantity,
