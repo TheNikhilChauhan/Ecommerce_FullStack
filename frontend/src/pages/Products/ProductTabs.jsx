@@ -60,7 +60,7 @@ const ProductTabs = ({
 
       <section>
         {activeTab === 1 && (
-          <div className="mt-4">
+          <div className="mt-4 mb-7">
             {userInfo ? (
               <form onSubmit={submitHandler}>
                 {/* rating */}
