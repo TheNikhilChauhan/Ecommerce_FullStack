@@ -8,6 +8,7 @@ import {
 } from "../redux/features/shop/shopSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import ProductCard from "./Products/ProductCard";
 
 const Shop = () => {
   const dispatch = useDispatch();
@@ -77,7 +78,7 @@ const Shop = () => {
   return (
     <>
       <div className="container mx-auto">
-        <div className="flex md:flex-row">
+        <div className="flex md:flex-row ml-[4rem]">
           <div className="bg-[#151515] p-3 mt-2 mb-2">
             <h2 className="h4 text-center py-2 px-2 bg-black rounded-full mb-2 text-white">
               Filter by Categories
@@ -105,19 +106,19 @@ const Shop = () => {
               ))}
             </div>
 
-            <h2 className="h4 text-center py-2 bg-black rounded-full mb-2">
+            <h2 className="h4 text-center py-2 bg-black rounded-full mb-2 text-white">
               Filter by Brands
             </h2>
 
             <div className="p-5">
               {uniqueBrands?.map((brand) => (
                 <>
-                  <div className="flex items-enter mr-4 mb-5">
+                  <div className="flex items-enter mr-4 mb-5 text-white ">
                     <input
                       type="radio"
                       id={brand}
                       name="brand"
-                      className="w-4 h-4 text-pink-400 bg-gray-100 border-gray-300 focus:ring-pink-500 dark:focus:ring-pink-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-pink-400 bg-gray-100 border-gray-300 mr-2 focus:ring-pink-500 dark:focus:ring-pink-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 "
                       onChange={() => handleBrandClick(brand)}
                     />
 
@@ -127,8 +128,8 @@ const Shop = () => {
               ))}
             </div>
 
-            <h2 className="h4 text-center py-2 bg-black rounded-full mb-2">
-              Filer by Price
+            <h2 className="h4 text-center py-2 bg-black rounded-full mb-2 text-white">
+              Filter by Price
             </h2>
 
             <div className="p-5 w-[15rem]">
@@ -141,7 +142,7 @@ const Shop = () => {
               />
             </div>
 
-            <div className="p-5 pt-0">
+            <div className="p-5 pt-0 text-white">
               <button
                 className="w-full border my-4"
                 onClick={() => window.location.reload()}
