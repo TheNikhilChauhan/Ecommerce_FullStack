@@ -71,7 +71,9 @@ const Order = () => {
   function createOrder(data, actions) {
     return actions.order
       .create({
-        purchase_units: [{ amount: { value: order.totalPrice } }],
+        purchase_units: [
+          { amount: { value: order.totalPrice }, currency_code: "INR" },
+        ],
       })
       .then((orderID) => {
         return orderID;
@@ -92,7 +94,7 @@ const Order = () => {
   ) : error ? (
     <Messsage variant="danger">{error.data.message}</Messsage>
   ) : (
-    <div className="container flex flex-col ml-[10rem] md:flex-row text-white">
+    <div className="container flex flex-col ml-[2rem] pl-[8rem] pr-[8rem] md:flex-row text-white mt-[2rem] ">
       <div className="md:w-2/3 pr-4 ">
         <div className="border gray-300 mt-5 pb-4 mb-5">
           {order.orderItems.length === 0 ? (
@@ -128,7 +130,7 @@ const Order = () => {
                       <td className="p-2 text-center">{item.quantity}</td>
                       <td className="p-2 text-center">{item.price}</td>
                       <td className="p-2 text-center">
-                        $ {(item.quantity * item.price).toFixed(2)}
+                        &#8377; {(item.quantity * item.price).toFixed(2)}
                       </td>
                     </tr>
                   ))}
@@ -202,6 +204,10 @@ const Order = () => {
                     createOrder={createOrder}
                     onApprove={onApprove}
                     onError={onError}
+                    options={{
+                      clientId: paypal.clientId,
+                      currency: "INR",
+                    }}
                   ></PayPalButtons>
                 </div>
               </div>
