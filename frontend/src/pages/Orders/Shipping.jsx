@@ -65,11 +65,11 @@ const Shipping = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-white mb-2">PinCode</label>
+            <label className="block text-white mb-2">pincode</label>
             <input
               type="text"
               className="w-full p-2 border rounded"
-              placeholder="Enter postal code"
+              placeholder="Enter pincode"
               value={pincode}
               required
               onChange={(e) => setPincode(e.target.value)}

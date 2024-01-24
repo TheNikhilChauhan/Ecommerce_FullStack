@@ -8,6 +8,7 @@ import Loader from "../../components/Loader";
 import {
   useDeliverOrderMutation,
   useGetOrderDetailsQuery,
+  useGetPaypalClientIdQuery,
   usePayOrderMutation,
 } from "../../redux/api/orderSlice";
 
@@ -28,20 +29,20 @@ const Order = () => {
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
-  //   const {
-  //     data: paypal,
-  //     isLoading: loadingPaPal,
-  //     error: errorPayPal,
-  //   } = useGetPaypalClientIdQuery();
+  const {
+    data: paypal,
+    isLoading: loadingPayPal,
+    error: errorPayPal,
+  } = useGetPaypalClientIdQuery();
 
   useEffect(() => {
-    if (!errorPayPal && !loadingPaPal && paypal.clientId) {
-      const loadingPaPalScript = async () => {
+    if (!errorPayPal && !loadingPayPal && paypal.clientId) {
+      const loadingPayPalScript = async () => {
         paypalDispatch({
           type: "resetOptions",
           value: {
             "client-id": paypal.clientId,
-            currency: "USD",
+            currency: "INR",
           },
         });
         paypalDispatch({ type: "setLoadingStatus", value: "pending" });
@@ -49,11 +50,11 @@ const Order = () => {
 
       if (order && !order.isPaid) {
         if (!window.paypal) {
-          loadingPaPalScript();
+          loadingPayPalScript();
         }
       }
     }
-  }, [errorPayPal, loadingPaPal, order, paypal, paypalDispatch]);
+  }, [errorPayPal, loadingPayPal, order, paypal, paypalDispatch]);
 
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
@@ -91,8 +92,8 @@ const Order = () => {
   ) : error ? (
     <Messsage variant="danger">{error.data.message}</Messsage>
   ) : (
-    <div className="container flex flex-col ml-[10rem] md:flex-row">
-      <div className="md:w-2/3 pr-4">
+    <div className="container flex flex-col ml-[10rem] md:flex-row text-white">
+      <div className="md:w-2/3 pr-4 ">
         <div className="border gray-300 mt-5 pb-4 mb-5">
           {order.orderItems.length === 0 ? (
             <Messsage>Order is empty</Messsage>
@@ -124,10 +125,10 @@ const Order = () => {
                         <Link to={`/product/${item.product}`}>{item.name}</Link>
                       </td>
 
-                      <td className="p-2 text-center">{item.qty}</td>
+                      <td className="p-2 text-center">{item.quantity}</td>
                       <td className="p-2 text-center">{item.price}</td>
                       <td className="p-2 text-center">
-                        $ {(item.qty * item.price).toFixed(2)}
+                        $ {(item.quantity * item.price).toFixed(2)}
                       </td>
                     </tr>
                   ))}
@@ -146,8 +147,7 @@ const Order = () => {
           </p>
 
           <p className="mb-4">
-            <strong className="text-pink-500">Name:</strong>{" "}
-            {order.user.username}
+            <strong className="text-pink-500">Name:</strong> {order.user.name}
           </p>
 
           <p className="mb-4">
@@ -157,7 +157,7 @@ const Order = () => {
           <p className="mb-4">
             <strong className="text-pink-500">Address:</strong>{" "}
             {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
-            {order.shippingAddress.postalCode}, {order.shippingAddress.country}
+            {order.shippingAddress.pincode}, {order.shippingAddress.country}
           </p>
 
           <p className="mb-4">
@@ -175,19 +175,19 @@ const Order = () => {
         <h2 className="text-xl font-bold mb-2 mt-[3rem]">Order Summary</h2>
         <div className="flex justify-between mb-2">
           <span>Items</span>
-          <span>$ {order.itemsPrice}</span>
+          <span>&#8377;{order.itemsPrice}</span>
         </div>
         <div className="flex justify-between mb-2">
           <span>Shipping</span>
-          <span>$ {order.shippingPrice}</span>
+          <span>&#8377;{order.shippingPrice}</span>
         </div>
         <div className="flex justify-between mb-2">
           <span>Tax</span>
-          <span>$ {order.taxPrice}</span>
+          <span>&#8377;{order.taxPrice}</span>
         </div>
         <div className="flex justify-between mb-2">
           <span>Total</span>
-          <span>$ {order.totalPrice}</span>
+          <span>&#8377;{order.totalPrice}</span>
         </div>
 
         {!order.isPaid && (
