@@ -2,6 +2,7 @@ import express from "express";
 import { isLoggedIn, authorizedRole } from "../middlewares/auth.middleware.js";
 import {
   calculateTotalSales,
+  calculateTotalSalesByDate,
   countTotalOrders,
   createOrder,
   findOrderById,
@@ -20,7 +21,7 @@ router
 
 router.route("/getUserOrders").get(isLoggedIn, getUserOrders);
 router.route("/totalOrders").get(countTotalOrders);
-router.route("/totalSalesByDate").get(calculateTotalSales);
+router.route("/totalSalesByDate").get(calculateTotalSalesByDate);
 router.route("/totalSale").get(calculateTotalSales);
 router.route("/:id").get(isLoggedIn, findOrderById);
 router.route("/:id/pay").put(isLoggedIn, markOrderAsPaid);

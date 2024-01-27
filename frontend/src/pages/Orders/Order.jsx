@@ -216,17 +216,20 @@ const Order = () => {
         )}
 
         {loadingDeliver && <Loader />}
-        {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-          <div>
-            <button
-              type="button"
-              className="bg-pink-500 text-white w-full py-2"
-              onClick={deliverHandler}
-            >
-              Mark As Delivered
-            </button>
-          </div>
-        )}
+        {userInfo &&
+          userInfo.user.role === "ADMIN" &&
+          order.isPaid &&
+          !order.isDelivered && (
+            <div>
+              <button
+                type="button"
+                className="bg-pink-500 text-white w-full py-2"
+                onClick={deliverHandler}
+              >
+                Mark As Delivered
+              </button>
+            </div>
+          )}
       </div>
     </div>
   );

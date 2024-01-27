@@ -134,6 +134,7 @@ const calculateTotalSalesByDate = async (req, res) => {
         },
       },
     ]);
+    res.json(salesByDate);
   } catch (error) {
     throw new ErrorHandler(error.message, 500);
   }
