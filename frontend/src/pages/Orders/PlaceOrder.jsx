@@ -45,7 +45,7 @@ const PlaceOrder = () => {
     <>
       <ProgressSteps step1 step2 step3 />
 
-      <div className="container mx-auto mt-8">
+      <div className="container mx-auto mt-8 px-[5rem]">
         {cart.cartItems.length === 0 ? (
           <Message>Your cart is empty</Message>
         ) : (
